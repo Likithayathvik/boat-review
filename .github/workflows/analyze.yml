@@ -2,8 +2,8 @@ name: boAt HApp Review Analyzer
 
 on:
   schedule:
-    - cron: '30 4 * * 1'    # Every Monday 10:00 AM IST (UTC+5:30)
-  workflow_dispatch:          # Manual trigger from GitHub UI
+    - cron: '30 4 * * 1'
+  workflow_dispatch:
   repository_dispatch:
     types: [gmail-trigger]
 
@@ -46,8 +46,15 @@ jobs:
           DRIVE_FOLDER: ${{ secrets.DRIVE_FOLDER }}
         run: python inference.py
 
-      - name: Upload Excel to Google Drive
+      - name: Send Excel via email
         env:
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
-          DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
-        run: python uploadtodrive.py
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python send_email.py
+
+      - name: Upload Excel as GitHub Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android_HearablesApp_Review_${{ github.run_id }}
+          path: Android_HearablesApp_Review.xlsx
+          retention-days: 90
