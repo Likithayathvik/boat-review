@@ -2,7 +2,7 @@ name: boAt HApp Review Analyzer
 
 on:
   schedule:
-    - cron: '30 4 * * 1'
+    - cron: '08 11 * * *'
   workflow_dispatch:
   repository_dispatch:
     types: [gmail-trigger]
