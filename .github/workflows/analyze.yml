@@ -38,6 +38,7 @@ jobs:
       - name: Run main pipeline
         env:
           DRIVE_FOLDER: ${{ secrets.DRIVE_FOLDER }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python main.py
 
       - name: Run BERT inference
