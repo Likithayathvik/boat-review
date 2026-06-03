@@ -5,7 +5,7 @@ on:
     - cron: '30 4 * * 1'    # Every Monday 10:00 AM IST (UTC+5:30)
   workflow_dispatch:          # Manual trigger from GitHub UI
   repository_dispatch:
-    types: [gmail-trigger]    # Triggered from Apps Script via Gmail
+    types: [gmail-trigger]
 
 jobs:
   analyze:
@@ -37,13 +37,11 @@ jobs:
 
       - name: Run main pipeline
         env:
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
           DRIVE_FOLDER: ${{ secrets.DRIVE_FOLDER }}
         run: python main.py
 
       - name: Run BERT inference
         env:
-          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
           DRIVE_FOLDER: ${{ secrets.DRIVE_FOLDER }}
         run: python inference.py
 
@@ -52,45 +50,3 @@ jobs:
           GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
           DRIVE_FOLDER_ID: ${{ secrets.DRIVE_FOLDER_ID }}
         run: python upload_to_drive.py
-
-      - name: Send success email
-        if: success()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "✅ boAt HApp Weekly Review Report Ready"
-          to: ${{ secrets.NOTIFY_EMAIL }}
-          from: boAt Analyzer
-          body: |
-            Hi Team,
-
-            The weekly boAt Hearables App review analysis is complete.
-
-            Period  : Last 7 days
-            Output  : Android_HearablesApp_Review.xlsx
-
-            The Excel report has been updated on Google Drive.
-
-            — boAt R&D QA Automation
-
-      - name: Send failure email
-        if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "❌ boAt HApp Analyzer FAILED"
-          to: ${{ secrets.NOTIFY_EMAIL }}
-          from: boAt Analyzer
-          body: |
-            The weekly review pipeline failed.
-
-            Check the logs here:
-            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            — boAt R&D QA Automation
