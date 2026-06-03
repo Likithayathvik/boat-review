@@ -19,9 +19,9 @@ from openpyxl import load_workbook
 warnings.filterwarnings("ignore")
 
 # ── CONFIG ─────────────────────────────────────────────────────────────
-EXCEL_PATH   = r"D:\Automation Scripts\Automation Scripts\BFAT\BFAT_HApp_Android_iOS_OnlyJk\Android_HearablesApp_Review.xlsx"
+EXCEL_PATH   = "Android_HearablesApp_Review.xlsx"
 DRIVE_FOLDER = "1HfgqJyPg1R4hL7RUQHC-XjQRECIPuSt7"
-MODEL_CACHE  = r"D:\Automation Scripts\Automation Scripts\BFAT\BFAT_HApp_Android_iOS_OnlyJk\model_cache"
+MODEL_CACHE  = "model_cache"
 OUTPUT_SHEET = "Negative_Reviews"
 BATCH_SIZE   = 16
 MAX_LEN      = 128
