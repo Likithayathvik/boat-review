@@ -2,8 +2,8 @@ name: boAt HApp Review Analyzer
 
 on:
   schedule:
-    - cron: '10 5 * * 2'
-  workflow_dispatch:
+    - cron: '30 4 * * 1'    # Every Monday 10:00 AM IST (UTC+5:30)
+  workflow_dispatch:          # Manual trigger from GitHub UI
   repository_dispatch:
     types: [gmail-trigger]
 
@@ -31,6 +31,12 @@ jobs:
         with:
           path: model_cache
           key: bert-model-v1
+
+      - name: Cache HuggingFace model
+        uses: actions/cache@v4
+        with:
+          path: ./model_cache
+          key: hf-distilbert-v1
 
       - name: Install dependencies
         run: pip install -r requirements.txt
