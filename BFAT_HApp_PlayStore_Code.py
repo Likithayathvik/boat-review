@@ -959,7 +959,11 @@ def Negative_Reviews():
     )
 
     negative_reviews_df = df[df['Ratings'].isin([1,2,3])].copy()
-    sentiment_analyzer = pipeline("sentiment-analysis")
+    sentiment_analyzer = pipeline(
+    "sentiment-analysis",
+    model="distilbert/distilbert-base-uncased-finetuned-sst-2-english",
+    cache_dir="./model_cache"
+)
 
     reasons, DUT = [], []
     for review in negative_reviews_df['Reviews']:
