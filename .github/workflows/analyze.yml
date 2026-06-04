@@ -2,7 +2,7 @@ name: boAt HApp Review Analyzer
 
 on:
   schedule:
-    - cron: '30 4 * * 1'    # Every Monday 10:00 AM IST (UTC+5:30)
+    - cron: '30 6 * * 3'    # Every Monday 10:00 AM IST (UTC+5:30)
   workflow_dispatch:          # Manual trigger from GitHub UI
   repository_dispatch:
     types: [gmail-trigger]
