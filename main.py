@@ -9,6 +9,7 @@
 import os
 import uuid
 import time
+import pytz
 import openpyxl
 import pandas as pd
 import BFAT_HApp_PlayStore_Code as orig
@@ -52,10 +53,20 @@ def fetch_and_save_reviews():
 
     df = pd.DataFrame(result)
 
-    # Filter last 7 days
-    df['at'] = pd.to_datetime(df['at'])
-    seven_days_ago = datetime.now() - timedelta(days=7)
+    # ── FIX: Use IST timezone so GitHub Actions (UTC) and local machine
+    #         both use the same cutoff. Without this, GitHub's clock is
+    #         5.5 hours behind IST, causing recent reviews to be missed.
+    ist = pytz.timezone('Asia/Kolkata')
+    now_ist = datetime.now(ist).replace(tzinfo=None)
+    seven_days_ago = now_ist - timedelta(days=7)
+
+    # Play Store API returns timezone-aware datetimes (UTC) — strip tzinfo
+    # so both sides are plain datetime for comparison
+    df['at'] = pd.to_datetime(df['at']).dt.tz_localize(None)
     df = df[df['at'] >= seven_days_ago]
+
+    print(f"  IST now        : {now_ist.strftime('%Y-%m-%d %H:%M:%S')} IST")
+    print(f"  Cutoff (7 days): {seven_days_ago.strftime('%Y-%m-%d %H:%M:%S')} IST")
 
     # Add unique reviewId
     df['reviewId'] = [str(uuid.uuid4()) for _ in range(len(df))]
