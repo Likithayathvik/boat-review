@@ -7,8 +7,7 @@ from datetime import datetime
 
 EMAIL_USERNAME = os.environ['EMAIL_USERNAME']
 EMAIL_PASSWORD = os.environ['EMAIL_PASSWORD']
-NOTIFY_EMAIL   = 'satya.priya@imaginemarketingindia.com'
-CC_EMAIL       = 'balabharathi.d@imaginemarketingindia.com'
+NOTIFY_EMAIL   = 'likitha.m@imaginemarketingindia.com'
 XLSX_FILE      = 'Android_HearablesApp_Review.xlsx'
 
 def send():
