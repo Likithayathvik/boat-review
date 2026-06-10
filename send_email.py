@@ -14,13 +14,16 @@ def send():
     msg = MIMEMultipart()
     msg['From']    = EMAIL_USERNAME
     msg['To']      = NOTIFY_EMAIL
-    msg['Cc']      = CC_EMAIL
     msg['Subject'] = f"✅ boAt HApp Weekly Review Report — {datetime.now().strftime('%d %b %Y')}"
 
     body = """Hello Sathya,
+
 The weekly boAt Hearables App review analysis is complete.
+
 Please find the Excel report attached.
-#— boAt R&D QA Automation"""
+
+— boAt R&D QA Automation"""
+
     msg.attach(MIMEText(body, 'plain'))
 
     # Attach Excel file
@@ -35,9 +38,9 @@ Please find the Excel report attached.
     # Send via Gmail SMTP
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
         server.login(EMAIL_USERNAME, EMAIL_PASSWORD)
-        server.send_message(msg, to_addrs=[NOTIFY_EMAIL, CC_EMAIL])
+        server.send_message(msg)
 
-    print(f"✅ Email sent to {NOTIFY_EMAIL}, CC: {CC_EMAIL}")
+    print(f"✅ Email sent to {NOTIFY_EMAIL}")
 
 if __name__ == '__main__':
     send()
